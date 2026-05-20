@@ -7,282 +7,72 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --cream: #faf7f2;
-    --ink: #1a1710;
-    --muted: #7a7265;
-    --accent: #c8602a;
-    --accent-light: #f5e8df;
-    --border: #ddd8cf;
-    --card-bg: #fff;
-    --selected-glow: #c8602a;
+    --cream: #faf7f2; --ink: #1a1710; --muted: #7a7265;
+    --accent: #c8602a; --accent-light: #f5e8df;
+    --border: #ddd8cf; --card-bg: #fff;
   }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; padding: 2rem 1rem 4rem; }
+  header { text-align: center; margin-bottom: 2.5rem; }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.1; margin-bottom: 0.4rem; }
+  header p { color: var(--muted); font-size: 0.95rem; font-weight: 300; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
-  }
+  .tabs { display: flex; max-width: 320px; margin: 0 auto 2rem; background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 50px; padding: 4px; gap: 0; }
+  .tab { flex: 1; text-align: center; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.2s; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+  .tab.active { background: var(--accent); color: #fff; }
 
-  header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
+  #vote-view, #results-view { display: none; }
+  #vote-view.visible, #results-view.visible { display: block; }
 
-  header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: var(--ink);
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
+  .name-section { max-width: 440px; margin: 0 auto 2rem; }
+  .name-section label { display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .name-section input { width: 100%; padding: 0.85rem 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--ink); outline: none; transition: border-color 0.2s; }
+  .name-section input:focus { border-color: var(--accent); }
 
-  header p {
-    color: var(--muted);
-    font-size: 1rem;
-    font-weight: 300;
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.2rem; max-width: 1050px; margin: 0 auto 2rem; }
+  .photo-card { position: relative; border-radius: 16px; overflow: hidden; cursor: pointer; border: 3px solid transparent; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; background: var(--card-bg); box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .photo-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.13); }
+  .photo-card.selected { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(200,96,42,0.18), 0 8px 28px rgba(0,0,0,0.13); transform: translateY(-4px); }
+  .photo-card img { width: 100%; height: 210px; object-fit: cover; display: block; }
+  .photo-card .label { padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+  .photo-card .label span { font-size: 0.88rem; font-weight: 500; color: var(--ink); }
+  .checkmark { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+  .photo-card.selected .checkmark { background: var(--accent); border-color: var(--accent); }
+  .checkmark svg { display: none; width: 12px; height: 12px; }
+  .photo-card.selected .checkmark svg { display: block; }
+  .selected-badge { position: absolute; top: 10px; left: 10px; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 500; padding: 3px 10px; border-radius: 20px; opacity: 0; transform: scale(0.85); transition: all 0.2s; }
+  .photo-card.selected .selected-badge { opacity: 1; transform: scale(1); }
 
-  .name-section {
-    max-width: 440px;
-    margin: 0 auto 2.5rem;
-  }
-
-  .name-section label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .name-section input {
-    width: 100%;
-    padding: 0.85rem 1.1rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: var(--card-bg);
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .name-section input:focus {
-    border-color: var(--accent);
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    max-width: 1050px;
-    margin: 0 auto 2.5rem;
-  }
-
-  .photo-card {
-    position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    border: 3px solid transparent;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    background: var(--card-bg);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  }
-
-  .photo-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.13);
-  }
-
-  .photo-card.selected {
-    border-color: var(--selected-glow);
-    box-shadow: 0 0 0 4px rgba(200,96,42,0.18), 0 8px 28px rgba(0,0,0,0.13);
-    transform: translateY(-4px);
-  }
-
-  .photo-card img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .photo-card .label {
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .photo-card .label span {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .checkmark {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-
-  .photo-card.selected .checkmark {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .checkmark svg {
-    display: none;
-    width: 12px;
-    height: 12px;
-  }
-
-  .photo-card.selected .checkmark svg {
-    display: block;
-  }
-
-  .selected-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    padding: 4px 10px;
-    border-radius: 20px;
-    opacity: 0;
-    transform: scale(0.85);
-    transition: all 0.2s;
-  }
-
-  .photo-card.selected .selected-badge {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .submit-wrap {
-    text-align: center;
-  }
-
-  .submit-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 0.9rem 2.8rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 50px;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-    transition: background 0.2s, transform 0.15s;
-  }
-
+  .submit-wrap { text-align: center; }
+  .submit-btn { background: var(--accent); color: #fff; border: none; padding: 0.9rem 2.8rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; border-radius: 50px; cursor: pointer; transition: background 0.2s, transform 0.15s; }
   .submit-btn:hover { background: #b0511f; }
   .submit-btn:active { transform: scale(0.97); }
+  .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
 
-  .error-msg {
-    color: #c0392b;
-    font-size: 0.88rem;
-    margin-top: 0.6rem;
-    display: none;
-  }
+  .msg { max-width: 440px; margin: 0.75rem auto 0; border-radius: 10px; padding: 0.75rem 1.2rem; font-size: 0.88rem; text-align: center; display: none; }
+  .msg.error { background: #fdf0ef; color: #c0392b; border: 1.5px solid #f5c0bb; }
+  .msg.success { background: #edfaf3; color: #1a7a4a; border: 1.5px solid #b0e0c8; }
 
-  /* Results panel */
-  #results-panel {
-    display: none;
-    max-width: 700px;
-    margin: 3rem auto 0;
-    background: var(--card-bg);
-    border-radius: 16px;
-    border: 1.5px solid var(--border);
-    padding: 1.75rem 2rem;
-  }
+  /* Results */
+  .results-header { display: flex; align-items: center; justify-content: space-between; max-width: 800px; margin: 0 auto 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+  .results-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; }
+  .results-actions { display: flex; gap: 0.5rem; }
+  .icon-btn { background: none; border: 1.5px solid var(--border); color: var(--muted); padding: 0.45rem 1.1rem; border-radius: 50px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; transition: border-color 0.2s, color 0.2s; }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .icon-btn.danger:hover { border-color: #c0392b; color: #c0392b; }
 
-  #results-panel h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    margin-bottom: 1.25rem;
-    color: var(--ink);
-  }
-
-  .results-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.92rem;
-  }
-
-  .results-table th {
-    text-align: left;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1.5px solid var(--border);
-  }
-
-  .results-table td {
-    padding: 0.65rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--ink);
-  }
-
+  .results-box { max-width: 800px; margin: 0 auto; background: var(--card-bg); border-radius: 16px; border: 1.5px solid var(--border); overflow: hidden; }
+  .results-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .results-table th { text-align: left; font-size: 0.73rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0.75rem 1.1rem; border-bottom: 1.5px solid var(--border); background: #fdfaf7; }
+  .results-table td { padding: 0.7rem 1.1rem; border-bottom: 1px solid var(--border); color: var(--ink); }
   .results-table tr:last-child td { border-bottom: none; }
+  .photo-pill { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.78rem; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .state-row { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 0.9rem; }
 
-  .photo-pill {
-    display: inline-block;
-    background: var(--accent-light);
-    color: var(--accent);
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
-
-  .clear-btn {
-    margin-top: 1.25rem;
-    background: none;
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    padding: 0.5rem 1.4rem;
-    border-radius: 50px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .clear-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .success-toast {
-    display: none;
-    background: #edfaf3;
-    color: #1a7a4a;
-    border: 1.5px solid #b0e0c8;
-    border-radius: 10px;
-    padding: 0.75rem 1.2rem;
-    font-size: 0.9rem;
-    text-align: center;
-    max-width: 440px;
-    margin: 0.75rem auto 0;
-  }
+  /* Config banner */
+  .config-banner { max-width: 800px; margin: 0 auto 1.5rem; background: #fffbeb; border: 1.5px solid #f6d860; border-radius: 12px; padding: 0.9rem 1.2rem; font-size: 0.88rem; color: #7a5f10; display: none; }
+  .config-banner strong { font-weight: 500; }
+  .config-banner code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 4px; font-size: 0.82rem; }
 </style>
 </head>
 <body>
@@ -292,96 +82,94 @@
   <p>Select one image, enter your name, and submit.</p>
 </header>
 
-<div class="name-section">
-  <label for="student-name">Your name</label>
-  <input type="text" id="student-name" placeholder="e.g. Maria Ionescu" autocomplete="off">
+<!-- Warning shown if script URL not configured -->
+<div class="config-banner" id="config-banner">
+  ⚠ <strong>Setup needed:</strong> Open this file and replace <code>YOUR_APPS_SCRIPT_URL_HERE</code> with your Google Apps Script Web App URL.
 </div>
 
-<div class="grid" id="photo-grid">
-
-  <div class="photo-card" data-id="1" data-label="Mountain Sunrise" onclick="selectPhoto(this)">
-    <div class="selected-badge">Selected</div>
-    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Mountain Sunrise" loading="lazy">
-    <div class="label">
-      <span>1 — Mountain Sunrise</span>
-      <div class="checkmark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="photo-card" data-id="2" data-label="Ocean Waves" onclick="selectPhoto(this)">
-    <div class="selected-badge">Selected</div>
-    <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80" alt="Ocean Waves" loading="lazy">
-    <div class="label">
-      <span>2 — Ocean Waves</span>
-      <div class="checkmark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="photo-card" data-id="3" data-label="Forest Path" onclick="selectPhoto(this)">
-    <div class="selected-badge">Selected</div>
-    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80" alt="Forest Path" loading="lazy">
-    <div class="label">
-      <span>3 — Forest Path</span>
-      <div class="checkmark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="photo-card" data-id="4" data-label="Desert Dunes" onclick="selectPhoto(this)">
-    <div class="selected-badge">Selected</div>
-    <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80" alt="Desert Dunes" loading="lazy">
-    <div class="label">
-      <span>4 — Desert Dunes</span>
-      <div class="checkmark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="photo-card" data-id="5" data-label="Snowy Lake" onclick="selectPhoto(this)">
-    <div class="selected-badge">Selected</div>
-    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80" alt="Snowy Lake" loading="lazy">
-    <div class="label">
-      <span>5 — Snowy Lake</span>
-      <div class="checkmark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg>
-      </div>
-    </div>
-  </div>
-
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('vote')">Vote</button>
+  <button class="tab" onclick="switchTab('results')">Results</button>
 </div>
 
-<div class="submit-wrap">
-  <button class="submit-btn" onclick="submitChoice()">Submit my choice</button>
-  <div class="error-msg" id="error-msg">Please enter your name and select a photo.</div>
-  <div class="success-toast" id="success-toast"></div>
+<!-- VOTE VIEW -->
+<div id="vote-view" class="visible">
+  <div class="name-section">
+    <label for="student-name">Your name</label>
+    <input type="text" id="student-name" placeholder="e.g. Maria Ionescu" autocomplete="off">
+  </div>
+
+  <div class="grid">
+    <div class="photo-card" data-id="1" data-label="Mountain Sunrise" onclick="selectPhoto(this)">
+      <div class="selected-badge">Selected</div>
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Mountain Sunrise" loading="lazy">
+      <div class="label"><span>1 — Mountain Sunrise</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
+    </div>
+    <div class="photo-card" data-id="2" data-label="Ocean Waves" onclick="selectPhoto(this)">
+      <div class="selected-badge">Selected</div>
+      <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80" alt="Ocean Waves" loading="lazy">
+      <div class="label"><span>2 — Ocean Waves</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
+    </div>
+    <div class="photo-card" data-id="3" data-label="Forest Path" onclick="selectPhoto(this)">
+      <div class="selected-badge">Selected</div>
+      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80" alt="Forest Path" loading="lazy">
+      <div class="label"><span>3 — Forest Path</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
+    </div>
+    <div class="photo-card" data-id="4" data-label="Desert Dunes" onclick="selectPhoto(this)">
+      <div class="selected-badge">Selected</div>
+      <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80" alt="Desert Dunes" loading="lazy">
+      <div class="label"><span>4 — Desert Dunes</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
+    </div>
+    <div class="photo-card" data-id="5" data-label="Snowy Lake" onclick="selectPhoto(this)">
+      <div class="selected-badge">Selected</div>
+      <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80" alt="Snowy Lake" loading="lazy">
+      <div class="label"><span>5 — Snowy Lake</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submit-btn" onclick="submitChoice()">Submit my choice</button>
+    <div class="msg error" id="error-msg">Please enter your name and select a photo.</div>
+    <div class="msg success" id="success-msg"></div>
+  </div>
 </div>
 
-<!-- Results panel (visible to teacher) -->
-<div id="results-panel">
-  <h2>Submissions</h2>
-  <table class="results-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Photo</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="results-body"></tbody>
-  </table>
-  <button class="clear-btn" onclick="clearResults()">Clear all results</button>
+<!-- RESULTS VIEW -->
+<div id="results-view">
+  <div class="results-header">
+    <h2>Submissions</h2>
+    <div class="results-actions">
+      <button class="icon-btn" onclick="loadResults()">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="results-box">
+    <table class="results-table" id="results-table">
+      <thead><tr><th>#</th><th>Name</th><th>Photo chosen</th><th>Submitted at</th></tr></thead>
+      <tbody id="results-body">
+        <tr><td colspan="4" class="state-row">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
+  // ─── PASTE YOUR APPS SCRIPT URL BELOW ───────────────────────────────────────
+  const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  // ────────────────────────────────────────────────────────────────────────────
+
   let selected = null;
-  let submissions = JSON.parse(localStorage.getItem('photo_submissions') || '[]');
+
+  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    document.getElementById('config-banner').style.display = 'block';
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) =>
+      t.classList.toggle('active', (i === 0 && tab === 'vote') || (i === 1 && tab === 'results')));
+    document.getElementById('vote-view').classList.toggle('visible', tab === 'vote');
+    document.getElementById('results-view').classList.toggle('visible', tab === 'results');
+    if (tab === 'results') loadResults();
+  }
 
   function selectPhoto(card) {
     document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('selected'));
@@ -389,64 +177,92 @@
     selected = { id: card.dataset.id, label: card.dataset.label };
   }
 
-  function submitChoice() {
+  async function submitChoice() {
     const name = document.getElementById('student-name').value.trim();
     const err = document.getElementById('error-msg');
-    const toast = document.getElementById('success-toast');
+    const succ = document.getElementById('success-msg');
+    const btn = document.getElementById('submit-btn');
+
+    err.style.display = 'none';
+    succ.style.display = 'none';
 
     if (!name || !selected) {
+      err.textContent = 'Please enter your name and select a photo.';
       err.style.display = 'block';
-      toast.style.display = 'none';
       return;
     }
-    err.style.display = 'none';
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      err.textContent = 'The form is not configured yet. Please set up the Google Apps Script URL.';
+      err.style.display = 'block';
+      return;
+    }
 
-    const entry = {
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const payload = {
+      timestamp: new Date().toLocaleString(),
       name,
       photoId: selected.id,
-      photoLabel: selected.label,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      photoLabel: selected.label
     };
 
-    submissions.push(entry);
-    localStorage.setItem('photo_submissions', JSON.stringify(submissions));
+    try {
+      // Google Apps Script requires no-cors for POST from static pages
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    toast.textContent = `✓ Thanks, ${name}! You chose "${selected.label}".`;
-    toast.style.display = 'block';
+      succ.textContent = `✓ Thanks, ${name}! You chose "${selected.label}". Your response has been saved.`;
+      succ.style.display = 'block';
+      document.getElementById('student-name').value = '';
+      document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('selected'));
+      selected = null;
+    } catch (e) {
+      err.textContent = 'Could not save your response. Check your internet connection and try again.';
+      err.style.display = 'block';
+    }
 
-    document.getElementById('student-name').value = '';
-    document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('selected'));
-    selected = null;
-
-    renderResults();
+    btn.disabled = false;
+    btn.textContent = 'Submit my choice';
   }
 
-  function renderResults() {
-    if (submissions.length === 0) {
-      document.getElementById('results-panel').style.display = 'none';
+  async function loadResults() {
+    const tbody = document.getElementById('results-body');
+    tbody.innerHTML = '<tr><td colspan="4" class="state-row">Loading…</td></tr>';
+
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      tbody.innerHTML = '<tr><td colspan="4" class="state-row">Configure your Apps Script URL to see results.</td></tr>';
       return;
     }
-    document.getElementById('results-panel').style.display = 'block';
-    const tbody = document.getElementById('results-body');
-    tbody.innerHTML = submissions.map((s, i) => `
-      <tr>
-        <td style="color:var(--muted);font-size:0.82rem">${i + 1}</td>
-        <td><strong>${s.name}</strong></td>
-        <td><span class="photo-pill">Photo ${s.photoId} — ${s.photoLabel}</span></td>
-        <td style="color:var(--muted);font-size:0.82rem">${s.time}</td>
-      </tr>
-    `).join('');
-  }
 
-  function clearResults() {
-    if (confirm('Clear all submissions?')) {
-      submissions = [];
-      localStorage.removeItem('photo_submissions');
-      renderResults();
+    try {
+      const res = await fetch(APPS_SCRIPT_URL + '?action=get');
+      const rows = await res.json();
+
+      // Skip header row
+      const data = rows.slice(1).filter(r => r[0]);
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="state-row">No submissions yet. Share this page with your classmates!</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map((r, i) => `
+        <tr>
+          <td style="color:var(--muted);font-size:0.82rem">${i + 1}</td>
+          <td><strong>${r[1] || ''}</strong></td>
+          <td><span class="photo-pill">Photo ${r[2] || ''} — ${r[3] || ''}</span></td>
+          <td style="color:var(--muted);font-size:0.82rem">${r[0] || ''}</td>
+        </tr>
+      `).join('');
+    } catch (e) {
+      tbody.innerHTML = '<tr><td colspan="4" class="state-row">Could not load results. Make sure your Apps Script is deployed correctly.</td></tr>';
     }
   }
-
-  renderResults();
 </script>
 </body>
 </html>
