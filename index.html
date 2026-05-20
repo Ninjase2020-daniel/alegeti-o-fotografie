@@ -159,7 +159,7 @@
 
   let selected = null;
 
-  if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwYtdG4bzBQzykUKJHTWD1D3MCYqaJ3z5WY6z73pguKoPKNbG_cDWLl-U3BgiDpRS1p/exec') {
+  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
     document.getElementById('config-banner').style.display = 'block';
   }
 
@@ -191,7 +191,7 @@
       err.style.display = 'block';
       return;
     }
-    if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwYtdG4bzBQzykUKJHTWD1D3MCYqaJ3z5WY6z73pguKoPKNbG_cDWLl-U3BgiDpRS1p/exec') {
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
       err.textContent = 'The form is not configured yet. Please set up the Google Apps Script URL.';
       err.style.display = 'block';
       return;
@@ -234,7 +234,7 @@
     const tbody = document.getElementById('results-body');
     tbody.innerHTML = '<tr><td colspan="4" class="state-row">Loading…</td></tr>';
 
-    if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwYtdG4bzBQzykUKJHTWD1D3MCYqaJ3z5WY6z73pguKoPKNbG_cDWLl-U3BgiDpRS1p/exec') {
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
       tbody.innerHTML = '<tr><td colspan="4" class="state-row">Configure your Apps Script URL to see results.</td></tr>';
       return;
     }
