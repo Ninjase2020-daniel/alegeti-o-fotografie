@@ -153,15 +153,11 @@
 </div>
 
 <script>
-  // ─── PASTE YOUR APPS SCRIPT URL BELOW ───────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYtdG4bzBQzykUKJHTWD1D3MCYqaJ3z5WY6z73pguKoPKNbG_cDWLl-U3BgiDpRS1p/exec';
-  // ────────────────────────────────────────────────────────────────────────────
 
   let selected = null;
 
-  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    document.getElementById('config-banner').style.display = 'block';
-  }
+  // URL configured
 
   function switchTab(tab) {
     document.querySelectorAll('.tab').forEach((t, i) =>
@@ -208,13 +204,10 @@
     };
 
     try {
-      // Google Apps Script requires no-cors for POST from static pages
-      await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      // Send as form data — avoids CORS preflight that blocks JSON posts
+      const form = new FormData();
+      form.append('data', JSON.stringify(payload));
+      await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: form });
 
       succ.textContent = `✓ Thanks, ${name}! You chose "${selected.label}". Your response has been saved.`;
       succ.style.display = 'block';
