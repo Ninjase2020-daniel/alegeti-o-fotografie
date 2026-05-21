@@ -78,8 +78,8 @@
 <body>
 
 <header>
-  <h1>Choose your favourite photo</h1>
-  <p>Select one image, enter your name, and submit.</p>
+  <h1 data-i18n="title">Choose your favourite photo</h1>
+  <p data-i18n="subtitle">Select one image, enter your name, and submit.</p>
 </header>
 
 <!-- Warning shown if script URL not configured -->
@@ -88,48 +88,48 @@
 </div>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('vote')">Vote</button>
-  <button class="tab" onclick="switchTab('results')">Results</button>
+  <button class="tab active" onclick="switchTab('vote')" data-i18n="tabVote">Vote</button>
+<button class="tab" onclick="switchTab('results')" data-i18n="tabResults">Results</button>
 </div>
 
 <!-- VOTE VIEW -->
 <div id="vote-view" class="visible">
   <div class="name-section">
-    <label for="student-name">Your name</label>
-    <input type="text" id="student-name" placeholder="e.g. Calman Rafael" autocomplete="off">
+    <label for="student-name" data-i18n="nameLabel">Your name</label>
+    <input type="text" id="student-name" data-i18n-placeholder="namePlaceholder" placeholder="e.g. Calman Rafael" autocomplete="off">
   </div>
 
   <div class="grid">
     <div class="photo-card" data-id="1" data-label="Suba pe butoi cu vin" onclick="selectPhoto(this)">
-      <div class="selected-badge">Selected</div>
+      <div class="selected-badge" data-i18n="selected">Selected</div>
       <img src="https://i.postimg.cc/bNF1TM7r/1.jpg" style="object-position: 0 35%;" alt="Suba pe butoi cu vin" loading="lazy">
       <div class="label"><span>1 — Suba pe butoi cu vin</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
     </div>
     <div class="photo-card" data-id="2" data-label="Suba pe scaun" onclick="selectPhoto(this)">
-      <div class="selected-badge">Selected</div>
+      <div class="selected-badge" data-i18n="selected">Selected</div>
       <img src="https://i.postimg.cc/SK4R7fx4/2.jpg" style="object-position: 0 45%;" alt="Suba pe scaun" loading="lazy">
       <div class="label"><span>2 — Suba pe scaun</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
     </div>
     <div class="photo-card" data-id="3" data-label="Doi Suba" onclick="selectPhoto(this)">
-      <div class="selected-badge">Selected</div>
+      <div class="selected-badge" data-i18n="selected">Selected</div>
       <img src="https://i.postimg.cc/X7MrYW60/3.jpg" style="object-fit: cover;" alt="Doi Suba" loading="lazy">
       <div class="label"><span>3 — Doi Suba</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
     </div>
     <div class="photo-card" data-id="4" data-label="Suba gangster" onclick="selectPhoto(this)">
-      <div class="selected-badge">Selected</div>
+      <div class="selected-badge" data-i18n="selected">Selected</div>
       <img src="https://i.postimg.cc/Kj5hbty1/4.jpg" style="object-position: 0 15%;" alt="Suba gangster" loading="lazy">
       <div class="label"><span>4 — Suba gangster</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
     </div>
     <div class="photo-card" data-id="5" data-label="Suba elegant" onclick="selectPhoto(this)">
-      <div class="selected-badge">Selected</div>
+      <div class="selected-badge" data-i18n="selected">Selected</div>
       <img src="https://i.postimg.cc/wTtQSgcB/5.jpg" style="object-position: 0 38%;" alt="Suba elegant" loading="lazy">
       <div class="label"><span>5 — Suba elegant</span><div class="checkmark"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></div></div>
     </div>
   </div>
 
   <div class="submit-wrap">
-    <button class="submit-btn" id="submit-btn" onclick="submitChoice()">Submit my choice</button>
-    <div class="msg error" id="error-msg">Please enter your name and select a photo.</div>
+    <button class="submit-btn" id="submit-btn" onclick="submitChoice()" data-i18n="submitBtn">Submit my choice</button>
+    <div class="msg error" id="error-msg"></div>
     <div class="msg success" id="success-msg"></div>
   </div>
 </div>
@@ -137,25 +137,139 @@
 <!-- RESULTS VIEW -->
 <div id="results-view">
   <div class="results-header">
-    <h2>Submissions</h2>
+    <h2 data-i18n="resultsTitle">Submissions</h2>
     <div class="results-actions">
-      <button class="icon-btn" onclick="loadResults()">↻ Refresh</button>
+      <button class="icon-btn" onclick="loadResults()" data-i18n="refresh">↻ Refresh</button>
     </div>
   </div>
   <div class="results-box">
     <table class="results-table" id="results-table">
-      <thead><tr><th>#</th><th>Name</th><th>Photo chosen</th><th>Submitted at</th></tr></thead>
+      <thead><tr><th>#</th><th data-i18n="colName">Name</th><th data-i18n="colPhoto">Photo chosen</th><th data-i18n="colTime">Submitted at</th></tr></thead>
       <tbody id="results-body">
-        <tr><td colspan="4" class="state-row">Loading…</td></tr>
+        <tr><td colspan="4" class="state-row" data-i18n="loading">Loading…</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
-  // ─── PASTE YOUR APPS SCRIPT URL BELOW ───────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYtdG4bzBQzykUKJHTWD1D3MCYqaJ3z5WY6z73pguKoPKNbG_cDWLl-U3BgiDpRS1p/exec';
-  // ────────────────────────────────────────────────────────────────────────────
+
+  // ── TRANSLATIONS ─────────────────────────────────────────────────────────────
+  const translations = {
+    en: {
+      title: 'Choose your favourite photo', subtitle: 'Select one image, enter your name, and submit.',
+      tabVote: 'Vote', tabResults: 'Results', nameLabel: 'Your name', namePlaceholder: 'e.g. Calman Rafael',
+      selected: 'Selected', submitBtn: 'Submit my choice', saving: 'Saving…',
+      errNamePhoto: 'Please enter your name and select a photo.',
+      errSave: 'Could not save your response. Check your internet connection and try again.',
+      successMsg: (name, label) => `✓ Thanks, ${name}! You chose "${label}". Your response has been saved.`,
+      resultsTitle: 'Submissions', refresh: '↻ Refresh',
+      colName: 'Name', colPhoto: 'Photo chosen', colTime: 'Submitted at',
+      loading: 'Loading…', noSubmissions: 'No submissions yet. Share this page with your classmates!',
+      loadError: 'Could not load results. Make sure your Apps Script is deployed correctly.',
+    },
+    ro: {
+      title: 'Alege fotografia preferată', subtitle: 'Selectează o imagine, introdu numele tău și trimite.',
+      tabVote: 'Votează', tabResults: 'Rezultate', nameLabel: 'Numele tău', namePlaceholder: 'ex. Calman Rafael',
+      selected: 'Selectat', submitBtn: 'Trimite alegerea mea', saving: 'Se salvează…',
+      errNamePhoto: 'Te rugăm să introduci numele și să selectezi o fotografie.',
+      errSave: 'Nu s-a putut salva răspunsul. Verifică conexiunea la internet și încearcă din nou.',
+      successMsg: (name, label) => `✓ Mulțumim, ${name}! Ai ales „${label}". Răspunsul a fost salvat.`,
+      resultsTitle: 'Răspunsuri', refresh: '↻ Actualizează',
+      colName: 'Nume', colPhoto: 'Fotografia aleasă', colTime: 'Trimis la',
+      loading: 'Se încarcă…', noSubmissions: 'Niciun răspuns încă. Distribuie pagina colegilor tăi!',
+      loadError: 'Nu s-au putut încărca rezultatele. Asigură-te că Apps Script este publicat corect.',
+    },
+    fr: {
+      title: 'Choisissez votre photo préférée', subtitle: 'Sélectionnez une image, entrez votre nom et envoyez.',
+      tabVote: 'Voter', tabResults: 'Résultats', nameLabel: 'Votre nom', namePlaceholder: 'ex. Jean Dupont',
+      selected: 'Sélectionné', submitBtn: 'Envoyer mon choix', saving: 'Enregistrement…',
+      errNamePhoto: 'Veuillez entrer votre nom et sélectionner une photo.',
+      errSave: 'Impossible de sauvegarder. Vérifiez votre connexion et réessayez.',
+      successMsg: (name, label) => `✓ Merci, ${name} ! Vous avez choisi « ${label} ». Votre réponse a été enregistrée.`,
+      resultsTitle: 'Soumissions', refresh: '↻ Actualiser',
+      colName: 'Nom', colPhoto: 'Photo choisie', colTime: 'Soumis à',
+      loading: 'Chargement…', noSubmissions: "Aucune soumission pour l'instant. Partagez cette page !",
+      loadError: 'Impossible de charger les résultats.',
+    },
+    de: {
+      title: 'Wählen Sie Ihr Lieblingsfoto', subtitle: 'Wählen Sie ein Bild, geben Sie Ihren Namen ein und senden Sie ab.',
+      tabVote: 'Abstimmen', tabResults: 'Ergebnisse', nameLabel: 'Ihr Name', namePlaceholder: 'z.B. Max Mustermann',
+      selected: 'Ausgewählt', submitBtn: 'Auswahl absenden', saving: 'Wird gespeichert…',
+      errNamePhoto: 'Bitte Namen eingeben und ein Foto auswählen.',
+      errSave: 'Speichern fehlgeschlagen. Bitte Internetverbindung prüfen und erneut versuchen.',
+      successMsg: (name, label) => `✓ Danke, ${name}! Sie haben „${label}" gewählt. Ihre Antwort wurde gespeichert.`,
+      resultsTitle: 'Einsendungen', refresh: '↻ Aktualisieren',
+      colName: 'Name', colPhoto: 'Gewähltes Foto', colTime: 'Eingereicht um',
+      loading: 'Laden…', noSubmissions: 'Noch keine Einsendungen. Teilen Sie diese Seite!',
+      loadError: 'Ergebnisse konnten nicht geladen werden.',
+    },
+    es: {
+      title: 'Elige tu foto favorita', subtitle: 'Selecciona una imagen, escribe tu nombre y envía.',
+      tabVote: 'Votar', tabResults: 'Resultados', nameLabel: 'Tu nombre', namePlaceholder: 'ej. Juan García',
+      selected: 'Seleccionado', submitBtn: 'Enviar mi elección', saving: 'Guardando…',
+      errNamePhoto: 'Por favor, introduce tu nombre y selecciona una foto.',
+      errSave: 'No se pudo guardar tu respuesta. Comprueba tu conexión e inténtalo de nuevo.',
+      successMsg: (name, label) => `✓ ¡Gracias, ${name}! Elegiste "${label}". Tu respuesta ha sido guardada.`,
+      resultsTitle: 'Respuestas', refresh: '↻ Actualizar',
+      colName: 'Nombre', colPhoto: 'Foto elegida', colTime: 'Enviado a las',
+      loading: 'Cargando…', noSubmissions: '¡Aún no hay respuestas. Comparte esta página!',
+      loadError: 'No se pudieron cargar los resultados.',
+    },
+    it: {
+      title: 'Scegli la tua foto preferita', subtitle: "Seleziona un'immagine, inserisci il tuo nome e invia.",
+      tabVote: 'Vota', tabResults: 'Risultati', nameLabel: 'Il tuo nome', namePlaceholder: 'es. Mario Rossi',
+      selected: 'Selezionato', submitBtn: 'Invia la mia scelta', saving: 'Salvataggio…',
+      errNamePhoto: 'Inserisci il tuo nome e seleziona una foto.',
+      errSave: 'Impossibile salvare. Controlla la connessione e riprova.',
+      successMsg: (name, label) => `✓ Grazie, ${name}! Hai scelto "${label}". La tua risposta è stata salvata.`,
+      resultsTitle: 'Risposte', refresh: '↻ Aggiorna',
+      colName: 'Nome', colPhoto: 'Foto scelta', colTime: 'Inviato alle',
+      loading: 'Caricamento…', noSubmissions: 'Nessuna risposta ancora. Condividi questa pagina!',
+      loadError: 'Impossibile caricare i risultati.',
+    },
+    pt: {
+      title: 'Escolha a sua foto favorita', subtitle: 'Selecione uma imagem, escreva o seu nome e envie.',
+      tabVote: 'Votar', tabResults: 'Resultados', nameLabel: 'O seu nome', namePlaceholder: 'ex. João Silva',
+      selected: 'Selecionado', submitBtn: 'Enviar a minha escolha', saving: 'A guardar…',
+      errNamePhoto: 'Por favor, introduza o seu nome e selecione uma foto.',
+      errSave: 'Não foi possível guardar. Verifique a sua ligação e tente novamente.',
+      successMsg: (name, label) => `✓ Obrigado, ${name}! Escolheu "${label}". A sua resposta foi guardada.`,
+      resultsTitle: 'Respostas', refresh: '↻ Atualizar',
+      colName: 'Nome', colPhoto: 'Foto escolhida', colTime: 'Enviado às',
+      loading: 'A carregar…', noSubmissions: 'Ainda sem respostas. Partilhe esta página!',
+      loadError: 'Não foi possível carregar os resultados.',
+    },
+    hu: {
+      title: 'Válaszd ki a kedvenc fotódat', subtitle: 'Válassz egy képet, írd be a neved, és küldd el.',
+      tabVote: 'Szavazás', tabResults: 'Eredmények', nameLabel: 'A neved', namePlaceholder: 'pl. Kiss János',
+      selected: 'Kiválasztva', submitBtn: 'Választásom elküldése', saving: 'Mentés…',
+      errNamePhoto: 'Kérjük, add meg a neved és válassz egy fotót.',
+      errSave: 'Nem sikerült menteni. Ellenőrizd az internetkapcsolatot, és próbáld újra.',
+      successMsg: (name, label) => `✓ Köszönjük, ${name}! A „${label}" képet választottad. Válaszod elmentve.`,
+      resultsTitle: 'Beküldések', refresh: '↻ Frissítés',
+      colName: 'Név', colPhoto: 'Választott fotó', colTime: 'Beküldve',
+      loading: 'Betöltés…', noSubmissions: 'Még nincs beküldés. Oszd meg az oldalt!',
+      loadError: 'Nem sikerült betölteni az eredményeket.',
+    },
+  };
+
+  const langCode = (navigator.language || 'en').slice(0, 2).toLowerCase();
+  const t = translations[langCode] || translations['en'];
+
+  function applyLanguage() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] && typeof t[key] === 'string') el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (t[key]) el.placeholder = t[key];
+    });
+  }
+  applyLanguage();
+  // ─────────────────────────────────────────────────────────────────────────────
 
   let selected = null;
 
@@ -187,18 +301,13 @@
     succ.style.display = 'none';
 
     if (!name || !selected) {
-      err.textContent = 'Please enter your name and select a photo.';
-      err.style.display = 'block';
-      return;
-    }
-    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      err.textContent = 'The form is not configured yet. Please set up the Google Apps Script URL.';
+      err.textContent = t.errNamePhoto;
       err.style.display = 'block';
       return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Saving…';
+    btn.textContent = t.saving;
 
     const payload = {
       timestamp: new Date().toLocaleString(),
@@ -208,7 +317,6 @@
     };
 
     try {
-      // Google Apps Script requires no-cors for POST from static pages
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -216,38 +324,31 @@
         body: JSON.stringify(payload)
       });
 
-      succ.textContent = `✓ Thanks, ${name}! You chose "${selected.label}". Your response has been saved.`;
+      succ.textContent = t.successMsg(name, selected.label);
       succ.style.display = 'block';
       document.getElementById('student-name').value = '';
       document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('selected'));
       selected = null;
     } catch (e) {
-      err.textContent = 'Could not save your response. Check your internet connection and try again.';
+      err.textContent = t.errSave;
       err.style.display = 'block';
     }
 
     btn.disabled = false;
-    btn.textContent = 'Submit my choice';
+    btn.textContent = t.submitBtn;
   }
 
   async function loadResults() {
     const tbody = document.getElementById('results-body');
-    tbody.innerHTML = '<tr><td colspan="4" class="state-row">Loading…</td></tr>';
-
-    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      tbody.innerHTML = '<tr><td colspan="4" class="state-row">Configure your Apps Script URL to see results.</td></tr>';
-      return;
-    }
+    tbody.innerHTML = `<tr><td colspan="4" class="state-row">${t.loading}</td></tr>`;
 
     try {
       const res = await fetch(APPS_SCRIPT_URL + '?action=get');
       const rows = await res.json();
-
-      // Skip header row
       const data = rows.slice(1).filter(r => r[0]);
 
       if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="state-row">No submissions yet.</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="4" class="state-row">${t.noSubmissions}</td></tr>`;
         return;
       }
 
@@ -260,7 +361,7 @@
         </tr>
       `).join('');
     } catch (e) {
-      tbody.innerHTML = '<tr><td colspan="4" class="state-row">Could not load results. Make sure your Apps Script is deployed correctly.</td></tr>';
+      tbody.innerHTML = `<tr><td colspan="4" class="state-row">${t.loadError}</td></tr>`;
     }
   }
 </script>
